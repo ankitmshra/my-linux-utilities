@@ -177,6 +177,28 @@ function opengrok() {
             fi
             ;;
 
+	    "stop")
+            if [ -z "$2" ]; then
+                echo "Stopping all running OpenGrok containers..."
+                local containers=$(docker ps | grep "opengrok" | awk '{print $1}')
+                if [ -z "$containers" ]; then
+                    echo "No running OpenGrok containers found"
+                    return 0
+                fi
+                docker ps | grep "opengrok" | awk '{print $1}' | xargs docker stop
+                echo "All OpenGrok containers stopped"
+            else
+                echo "Stopping OpenGrok containers for version $2..."
+                local containers=$(docker ps | grep "opengrok:$2" | awk '{print $1}')
+                if [ -z "$containers" ]; then
+                    echo "No running OpenGrok containers found for version $2"
+                    return 0
+                fi
+                docker ps | grep "opengrok:$2" | awk '{print $1}' | xargs docker stop
+                echo "OpenGrok containers for version $2 stopped"
+            fi
+            ;;
+
         *)
             if [[ "$1" == -* ]]; then
                 echo "Error: Unknown option $1"
