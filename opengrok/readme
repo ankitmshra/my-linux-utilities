@@ -1,0 +1,3 @@
+bash for opengrok docker version control and setup
+need to setup directory ~/Tools/opengrok
+download and unpack opengrok src into the directory
